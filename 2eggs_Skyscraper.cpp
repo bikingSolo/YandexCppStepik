@@ -1,8 +1,11 @@
+// 1.9 13
+
 #include <iostream>
 #include <vector>
 using namespace std;
 
-int MinMax(int n) {     // Brute-Force solution
+// Brute-Force solution
+int MinMax(int n) {
     if (n <= 3) {
         return n - 1;
     }
@@ -16,7 +19,8 @@ int MinMax(int n) {     // Brute-Force solution
     return min;
 }
 
-int MinMaxMemo(int n, vector <int> &memo) {     // Brute-Force solution with memoization
+// Brute-Force solution with memoization
+int MinMaxMemo(int n, vector <int> &memo) {
     if (n <= 3) {
         return n - 1;
     }
@@ -33,6 +37,37 @@ int MinMaxMemo(int n, vector <int> &memo) {     // Brute-Force solution with mem
     memo[n] = min;
     return min;
 }
+
+// Binary-search solution 
+// Optimal criterion: i == MinMax(n - i) + 1, i: [1, n-1]
+int MaxMinBinSrch(int n){
+    if (n <= 3) {
+        return n - 1;
+    }
+    
+    int down = 1, up = n - 1, res;
+    while (down <= up) {
+        int mid = (up + down) / 2;
+        int res = MaxMinBinSrch(n - mid) + 1;
+
+        if (res < mid) {
+            up = mid - 1;
+        }
+        else if (mid < res) {
+            down = mid + 1;
+            // kind of edge case ??
+            if (res == down) {
+                return res;
+            }
+        }
+        else {
+            return res;
+        }
+    }
+    return res;
+}
+
+//...3 more solutions...
 
 int main() {
     int n;
